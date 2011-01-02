@@ -8,7 +8,7 @@ require "rake/gempackagetask"
 require "rake/rdoctask"
 require "rake/testtask"
 
-NICE_ENUM_VERSION = [0, 1, 0]
+NICE_ENUM_VERSION = [0, 1, 1]
 
 desc "Installs nice-enum to sitelib"
 task :install do
@@ -17,8 +17,8 @@ task :install do
 	def install_group(basedir, dst)
 		Dir[basedir + "/**/*"].each do |f|
 			dest = File.join(dst, File.dirname(f).sub(basedir, ""), "")
-			FileUtils::mkdir_p dir;
-			FileUtils::cp f, dir
+			FileUtils::mkdir_p dest
+			FileUtils::cp f, dest
 		end
 	end
 	
