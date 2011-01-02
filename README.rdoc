@@ -1,0 +1,196 @@
+= Nice Enumerations for Ruby
+
+Ruby's built-in enumeration support, or the lack thereof, is somewhere in the
+C/C++-Age. An enum in Ruby is usually a class or module with various
+constants set to some values. Attempting to display the enum variables will
+result in their values being displayed, which have no use to the end user of
+the application.
+
+	module Permissions
+		Read = 4
+		Write = 2
+		Execute = 1
+	end
+	
+	permissions = Permissions::Read | Permissions::Write
+	puts permissions
+	# Will output "6" - Altough correct, it won't make any sense for a
+	# computer-illiterate user.
+
+Nice-Enum solves this problem by encapsulating the enum values inside an
+instance of their enclosing class and making the to_s method return the
+name of the constant. The above code translates to
+
+	class Permissions < Flags
+		enum :Read,    4
+		enum :Write,   2
+		enum :Execute, 1
+	end
+	
+	permissions = Permissions::Read | Permissions::Write
+	puts permissions.join(" and ")
+	# Will output "Write and Read".
+
+Nice-Enum contains two classes: Enum and Flags. Instances of Flag will
+automatically figure out it's components when or'd together and provides a
+different to_s method. Otherwise the classes are functionally identical.
+
+Of course, an enum can use anything as it's value type, not only integers.
+The value type must only provide a <=> operator.
+
+= Installation
+
+Using Rubygems:
+
+	gem install nice-enum
+
+Manually:
+
+	git clone git://github.com/raphaelr/nice-enum
+	cd nice-enum
+	rake install
+
+== Usage
+
+	require "nice_enum"
+
+= Features
+
+== From Enums to Fixnums and back
+
+Getting the underlying value from an enum instance is usually not neccessary
+because the Enumeration class will hand method calls automatically down to
+the underlying value:
+
+	puts Permissions::Execute.next  # => 2; Will call 1.next
+
+You can explicitly ask for the underlying value:
+
+	puts Permissions::Execute.value # => 1
+
+The reverse has to be done explicitly, but it's very easy:
+
+	puts Permissions.new(1)         # => Execute
+	puts Permissions.new(3)         # => Execute | Write
+	puts Permissions.new(80)        # => 80
+
+In the last example, the Permission instance is treated as a Permission with
+the name "80" and the value 80.
+
+== Auto-Values
+
+Like in most languages with enum support, you don't have to explicitly provide
+values for enumerations. Nice-Enum will create sequential Fixnums if you don't
+specify them.
+
+	class Suit < Enum
+		enum :Spades    # Will become 0
+		enum :Hearts    # Will become 1
+		enum :Diamonds  # Will become 2
+		enum :Clubs     # Will become 3
+	end
+
+You can also mix explicit and implicit values together:
+
+	class Numbers < Enum
+		enum :Zero
+		enum :One
+		enum :FourtyEight, 48
+		enum :FourtyNine
+	end
+
+Note that eventual gaps aren't filled.
+
+== Iterating over values
+
+	Suit.each { |suit| puts suit }
+	# Outputs: Spades
+	#          Hearts
+	#          Diamonds
+	#          Clubs
+
+The Enum class also includes the Enumerable module so you can do stuff like:
+
+	Suit.map { |suit| suit.name.chop }.each { |suit| puts suit }
+	# Outputs: Spade
+	#          Heart
+	#          Diamond
+	#          Club
+
+== Attributes
+
+If that's not nice enough for you, maybe this is: You can attach any number of
+attributes to enumerations. For example:
+
+	class Number < Enum
+		enum :Zero, 0, :squared => 0
+		enum :One, 1, :note => "Average number of eyes per eyehole", :squared => 1
+		enum :Five, 5, :note => "Number of digits per hand", :squared => 25
+	end
+	
+	Number.each do |enum|
+		puts "#{enum} is squared #{enum.squared} and is special because it is the #{enum.note}."
+	end
+	# Outputs: Zero is squared 0 and is special because it is the nil.
+	#          One is squared 1 and is special because it is the Average number of eyes per eyehole.
+	#          Five is squared 25 and is special because it is the Number of digits per hand.
+
+You can also provide default values for attributes:
+
+	class Number < Enum
+		default :note => "number which is the same if multiplied with one"
+		# ...
+	end
+	# Outputs: Zero is squared 0 and is special because it is the number which is the same if multiplied with one.
+	#          One is squared 1 and is special because it is the Average number of eyes per eyehole.
+	#          Five is squared 25 and is special because it is the Number of digits per hand.
+
+== Instance methods
+
+Since enum values are instances of their enclosing class, you can add methods to them:
+
+	class Number < Enum
+		enum :Zero, 0
+		enum :One, 1
+		enum :Two, 2
+		
+		def square
+			value ** 2
+		end
+	end
+	
+	numbers = Number.to_a
+	numbers << Number.new(3)
+	
+	numbers.each { |number| puts "#{number} squared is #{number.square}." }
+	# Outputs: Zero squared is 0.
+	#          One squared is 1.
+	#          Two squared is 4.
+	#          3 squared is 9.
+
+= License
+
+Copyright (c) 2010, Raphael Robatsch
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+* The names of the developers or contributors must not be used to
+  endorse or promote products derived from this software without
+  specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE DEVELOPERS OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
