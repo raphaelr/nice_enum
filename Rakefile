@@ -10,7 +10,7 @@ require "rake/testtask"
 
 NICE_ENUM_VERSION = [0, 1, 1]
 
-desc "Installs nice-enum to sitelib"
+desc "Installs nice_enum to sitelib"
 task :install do
 	sitelib = RbConfig::CONFIG["sitelibdir"]
 	
@@ -28,7 +28,7 @@ end
 
 Rake::RDocTask.new do |t|
 	t.main = "README.rdoc"
-	t.title = "Nice-Enum #{NICE_ENUM_VERSION.join(".")} Documentation"
+	t.title = "nice_enum #{NICE_ENUM_VERSION.join(".")} Documentation"
 	t.rdoc_files.include("lib/**/*", "*.rdoc")
 end
 
@@ -37,11 +37,11 @@ Rake::TestTask.new do |t|
 end
 
 gemspec = Gem::Specification.new do |s|
-	s.name = "nice-enum"
+	s.name = "nice_enum"
 	s.version = NICE_ENUM_VERSION.join(".")
 	s.author = "Raphael Robatsch"
 	s.email = "mf.m-f@rleahpar".reverse
-	s.homepage = "http://raphaelr.github.com/nice-enum"
+	s.homepage = "http://raphaelr.github.com/nice_enum"
 	s.summary = "Nice Enumerations for Ruby"
 	s.has_rdoc = true
 	
