@@ -38,7 +38,7 @@ different to_s method. Otherwise the classes are functionally identical.
 Of course, an enum can use anything as it's value type, not only integers.
 The value type must only provide a <=> operator.
 
-Up-To-Date documentation is avaiable {at rubydoc.info}[http://rubydoc.info/github/raphaelr/nice-enum/master/frames].
+Up-To-Date documentation is avaiable {at rubydoc.info}[http://rubydoc.info/github/raphaelr/nice_enum/master/frames].
 
 = Installation
 
