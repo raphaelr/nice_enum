@@ -32,7 +32,7 @@ class Enum
 	include Comparable
 	
 	# Returns the name of the enumeration member. This is the first parameter
-	# passed to +enum+.
+	# passed to +enum+, converted to a string.
 	attr_reader :name
 	
 	# Returns the value of the enumeration member. This is the second parameter
