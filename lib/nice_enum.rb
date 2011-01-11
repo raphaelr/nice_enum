@@ -45,6 +45,12 @@ class Enum
 		return value <=> other
 	end
 	
+	# Returns whether the value of +self+ and the value of +other+ are equal.
+	def eql?(other)
+		other = other.value if other.is_a? self.class
+		return value.eql?(other)
+	end
+	
 	# Returns the hashcode of +value+.
 	def hash
 		value.hash

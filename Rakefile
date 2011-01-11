@@ -8,7 +8,7 @@ require "rake/gempackagetask"
 require "rake/rdoctask"
 require "rake/testtask"
 
-NICE_ENUM_VERSION = [0, 1, 2]
+NICE_ENUM_VERSION = [0, 1, 3]
 
 desc "Installs nice_enum to sitelib"
 task :install do
