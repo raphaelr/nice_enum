@@ -17,7 +17,7 @@ the application.
 	# Will output "6" - Altough correct, it won't make any sense for a
 	# computer-illiterate user.
 
-Nice-Enum solves this problem by encapsulating the enum values inside an
+nice_enum solves this problem by encapsulating the enum values inside an
 instance of their enclosing class and making the to_s method return the
 name of the constant. The above code translates to
 
@@ -31,12 +31,13 @@ name of the constant. The above code translates to
 	puts permissions.join(" and ")
 	# Will output "Write and Read".
 
-Nice-Enum contains two classes: Enum and Flags. Instances of Flag will
+nice_enum contains two classes: Enum and Flags. Instances of Flag will
 automatically figure out it's components when or'd together and provides a
 different to_s method. Otherwise the classes are functionally identical.
 
 Of course, an enum can use anything as it's value type, not only integers.
-The value type must only provide a <=> operator.
+The value type must only provide a <=> operator, a +hash+ method, and a
+<tt>eql?</tt> method.
 
 Up-To-Date documentation is avaiable {at rubydoc.info}[http://rubydoc.info/github/raphaelr/nice_enum/master/frames].
 
@@ -44,12 +45,12 @@ Up-To-Date documentation is avaiable {at rubydoc.info}[http://rubydoc.info/githu
 
 Using Rubygems:
 
-	gem install nice-enum
+	gem install nice_enum
 
 Manually:
 
-	git clone git://github.com/raphaelr/nice-enum
-	cd nice-enum
+	git clone git://github.com/raphaelr/nice_enum
+	cd nice_enum
 	rake install
 
 == Usage
@@ -82,7 +83,7 @@ the name "80" and the value 80.
 == Auto-Values
 
 Like in most languages with enum support, you don't have to explicitly provide
-values for enumerations. Nice-Enum will create sequential Fixnums if you don't
+values for enumerations. nice_enum will create sequential Fixnums if you don't
 specify them.
 
 	class Suit < Enum
