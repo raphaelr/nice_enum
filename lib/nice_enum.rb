@@ -45,6 +45,11 @@ class Enum
 		return value <=> other
 	end
 	
+	# Returns the hashcode of +value+.
+	def hash
+		value.hash
+	end
+	
 	# Returns the name of the enumeration member.
 	def to_s
 		@name
