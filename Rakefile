@@ -4,11 +4,11 @@ require "rbconfig"
 
 require "rake"
 require "rake/clean"
-require "rake/gempackagetask"
-require "rake/rdoctask"
+require "rubygems/package_task"
+require "rdoc/task"
 require "rake/testtask"
 
-NICE_ENUM_VERSION = [0, 1, 4]
+NICE_ENUM_VERSION = [0, 2, 0]
 
 desc "Installs nice_enum to sitelib"
 task :install do
@@ -40,8 +40,8 @@ gemspec = Gem::Specification.new do |s|
 	s.name = "nice_enum"
 	s.version = NICE_ENUM_VERSION.join(".")
 	s.author = "Raphael Robatsch"
-	s.email = "mf.m-f@rleahpar".reverse
-	s.homepage = "http://raphaelr.github.com/nice_enum"
+	s.email = "ten.erawtfosepat@leahpar".reverse
+	s.homepage = "http://raphaelr.github.io/nice_enum"
 	s.summary = "Nice Enumerations for Ruby"
 	s.has_rdoc = true
 	
@@ -57,7 +57,7 @@ gemspec = Gem::Specification.new do |s|
 	s.test_files = Dir["test/**/*_test.rb"]
 end
 
-Rake::GemPackageTask.new(gemspec) do |t|
+Gem::PackageTask.new(gemspec) do |t|
 	t.need_zip = true
 	t.need_tar_gz = true
 end
